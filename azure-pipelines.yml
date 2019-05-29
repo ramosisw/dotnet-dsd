@@ -43,5 +43,14 @@ steps:
     docker --config . manifest push ramosisw/dotnet-dsd
     docker --config . logout
   displayName: 'docker push images'
+# - task: InstallSSHKey@0
+#   inputs:
+#     hostName: 
+#     sshPublicKey: 
+#     #sshPassphrase: # Optional
+#     sshKeySecureFile: 
+# - task: SSH@0
+#   inputs:
+#     sshEndpoint: 
   
 
