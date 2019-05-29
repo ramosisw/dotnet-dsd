@@ -33,6 +33,7 @@ steps:
     docker build -f src/App/arm.dockerfile -t ramosisw/dotnet-dsd:arm .
     docker build -f src/App/amd64.dockerfile -t ramosisw/dotnet-dsd:amd64 .
   displayName: 'docker build arm & amd64'
+  condition: and(succeeded(), startsWith(variables['Build.SourceVersionMessage'], '[Deploy]'))
 - script: |
     echo login with $(dockerid)
     docker --config . login --username $(dockerid) --password $(dockerpswd)
@@ -43,6 +44,7 @@ steps:
     docker --config . manifest push ramosisw/dotnet-dsd
     docker --config . logout
   displayName: 'docker push images'
+  condition: and(succeeded(), startsWith(variables['Build.SourceVersionMessage'], '[Deploy]'))
 # - task: InstallSSHKey@0
 #   inputs:
 #     hostName: 
