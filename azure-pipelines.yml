@@ -46,12 +46,21 @@ steps:
     docker --config . logout
   condition: and(succeeded(), startsWith(variables['Build.SourceVersionMessage'], '[Deploy]'))
   displayName: 'docker push images'
-# - task: InstallSSHKey@0
-#   inputs:
-#     hostName: 
-#     sshPublicKey: 
-#     #sshPassphrase: # Optional
-#     sshKeySecureFile: 
-# - task: SSH@0
-#   inputs:
-#     sshEndpoint: 
+- task: DownloadSecureFile@1
+  displayName: 'Download secure file'
+  inputs:
+    secureFile: 'id_rsa'
+- task: InstallSSHKey@0
+  displayName: 'Install an SSH key'
+  inputs:
+    knownHostsEntry: '|1|c30xsaNQWk+CfoGpyLWbZ3Ls+Vo=|S4ENSdyar8avqH/aHHHdnAc9MDs= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBKiiA8l6EVVLWSiMQqa5NcnkvV5/cwdqLTdnczJXbRgXIGo2tDudKYNMTCgEImx3+SvJg1ysCsn8WVsfjEHHDZI='
+    sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAwU5mrdl8O+8P3pYYXEbL5kbcPd0/+jfroWSx LNRNXYqAF6V0ZhS1BHrue92DcjBCyvOtHCnxfpu1PDn4NJA85Uk1CRSWSkFn3JgJ n9+nw8nLx8n/9Ndv0VQ4DudsBrSroPhqW8GZ34Fp9RZ7Va62CLTS9caw7ovkpfkS KCSswhJ0Teh98Rjd6NHCYLzuZPeSME2TaZVqhIh+vlRc+YTLQCwIJhx6NUp4dx+8 3mIdBi0GzYvbcyrk9MAYitmBWYS/w8gacdUQxffFP3oM4Sb4LBaKI5u8ca7u/32b MX6GIGkc46c/VxMgCT3REghfl9wv+3vEEZq8K5OgWMrlGSGUiQ=='
+    sshKeySecureFile: 'id_rsa'
+- task: SSH@0
+  displayName: 'Run shell commands on remote machine'
+  inputs:
+    sshEndpoint: wayproyect
+    commands: |
+     pi
+     sudo docker pull ramosisw/dotnet-dsd
+
