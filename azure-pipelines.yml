@@ -54,6 +54,7 @@ steps:
 - task: SSH@0
   inputs:
     sshEndpoint: wayproyect
-    commands: '/var/www/wayproyect.com/ssh/run.sh'
+    runOptions: 'inline'
+    inline: '/var/www/wayproyect.com/ssh/run.sh'
   displayName: 'Run shell commands on remote machine'
   condition: and(succeeded(), startsWith(variables['Build.SourceVersionMessage'], '[Deploy]'))
