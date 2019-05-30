@@ -52,4 +52,3 @@ steps:
     commands: /var/www/wayproyect.com/ssh/run.sh
   displayName: 'Run shell commands on remote machine'
   condition: and(succeeded(), in(variables['Build.SourceVersionMessage'], '[Deploy]', '[Publish]'))
-
