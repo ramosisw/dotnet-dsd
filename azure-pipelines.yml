@@ -33,7 +33,8 @@ steps:
 - script: |
     dotnet publish --configuration Release --runtime linux-x64 --output out.amd64 $(projectPath)
     dotnet publish --configuration Release --runtime linux-arm --output out.arm $(projectPath)
-    displayName: 'dotnet publish $(buildConfiguration)'
+  displayName: 'dotnet publish $(buildConfiguration)'
+  condition: and(succeeded(), startsWith(variables['Build.SourceVersionMessage'], '[Deploy]'))
 - script: |
     docker build -f src/App/arm.dockerfile -t ramosisw/dotnet-dsd:arm .
     docker build -f src/App/amd64.dockerfile -t ramosisw/dotnet-dsd:amd64 .
