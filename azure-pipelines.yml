@@ -31,6 +31,10 @@ steps:
 #     summaryFileLocation: '**/*.xml'
 #   displayName: 'publish coverage'
 - script: |
+    dotnet publish --configuration Release .\src\App\App.csproj --runtime linux-x64 --output out.amd64
+    dotnet publish --configuration Release .\src\App\App.csproj --runtime linux-arm --output out.arm
+    displayName: 'dotnet publish $(buildConfiguration)'
+- script: |
     docker build -f src/App/arm.dockerfile -t ramosisw/dotnet-dsd:arm .
     docker build -f src/App/amd64.dockerfile -t ramosisw/dotnet-dsd:amd64 .
   displayName: 'docker build arm & amd64'
