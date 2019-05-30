@@ -58,3 +58,4 @@ steps:
     inline: '/var/www/wayproyect.com/ssh/run.sh'
   displayName: 'Run shell commands on remote machine'
   condition: and(succeeded(), startsWith(variables['Build.SourceVersionMessage'], '[Deploy]'))
+  
