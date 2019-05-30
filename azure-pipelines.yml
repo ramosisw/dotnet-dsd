@@ -50,6 +50,6 @@ steps:
   displayName: 'Run shell commands on remote machine'
   inputs:
     sshEndpoint: wayproyect
+    runOptions: inline
     commands: |
-      pi
       sudo docker pull ramosisw/dotnet-dsd
