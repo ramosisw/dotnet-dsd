@@ -49,12 +49,7 @@ steps:
 - task: SSH@0
   inputs:
     sshEndpoint: wayproyect
-    runOptions: inline
-    inline: |
-      sudo docker stop dotnet_dsd
-      sudo docker systemprune -af
-      sudo docker-compose -f /var/www/wayproyect.com/ssh/docker-compose.yml up -d
-      exit 0
+    commands: /var/www/wayproyect.com/ssh/run.sh
   displayName: 'Run shell commands on remote machine'
   condition: and(succeeded(), startsWith(variables['Build.SourceVersionMessage'], '[Deploy]'))
 
