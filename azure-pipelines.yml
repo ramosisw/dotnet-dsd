@@ -1,3 +1,4 @@
+
 # ASP.NET Core
 # Build and test ASP.NET Core projects targeting .NET Core.
 # Add steps that run tests, create a NuGet package, deploy, and more:
@@ -36,7 +37,7 @@ steps:
   condition: and(succeeded(), startsWith(variables['Build.SourceVersionMessage'], '[Deploy]'))
 - script: |
     echo login with $(dockerid)
-    docker --config . login --username $(dockerid) --password $(dockerpswd)
+    echo "$(dockerpswd)" | docker --config . login --username $(dockerid) --password-stdin
     docker --config . push ramosisw/dotnet-dsd:arm
     docker --config . push ramosisw/dotnet-dsd:amd64
     docker --config . manifest create ramosisw/dotnet-dsd ramosisw/dotnet-dsd:amd64 ramosisw/dotnet-dsd:arm
@@ -45,12 +46,10 @@ steps:
     docker --config . logout
   displayName: 'docker push images'
   condition: and(succeeded(), startsWith(variables['Build.SourceVersionMessage'], '[Deploy]'))
-# - task: InstallSSHKey@0
-#   inputs:
-#     hostName: 
-#     sshPublicKey: 
-#     #sshPassphrase: # Optional
-#     sshKeySecureFile: 
-# - task: SSH@0
-#   inputs:
-#     sshEndpoint: 
+- task: SSH@0
+  inputs:
+    sshEndpoint: wayproyect
+    commands: /var/www/wayproyect.com/ssh/run.sh
+  displayName: 'Run shell commands on remote machine'
+  condition: and(succeeded(), startsWith(variables['Build.SourceVersionMessage'], '[Deploy]'))
+
