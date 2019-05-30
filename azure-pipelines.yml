@@ -1,3 +1,4 @@
+
 # ASP.NET Core
 # Build and test ASP.NET Core projects targeting .NET Core.
 # Add steps that run tests, create a NuGet package, deploy, and more:
@@ -32,16 +33,18 @@ steps:
 - script: |
     docker build -f src/App/arm.dockerfile -t ramosisw/dotnet-dsd:arm .
     docker build -f src/App/amd64.dockerfile -t ramosisw/dotnet-dsd:amd64 .
+  condition: and(succeeded(), startsWith(variables['Build.SourceVersionMessage'], '[Deploy]'))
   displayName: 'docker build arm & amd64'
 - script: |
     echo login with $(dockerid)
-    docker --config . login --username $(dockerid) --password $(dockerpswd)
+    echo "$(dockerpswd)" | docker --config . login --username $(dockerid) --password-stdin
     docker --config . push ramosisw/dotnet-dsd:arm
     docker --config . push ramosisw/dotnet-dsd:amd64
     docker --config . manifest create ramosisw/dotnet-dsd ramosisw/dotnet-dsd:amd64 ramosisw/dotnet-dsd:arm
     docker --config . manifest annotate --arch arm ramosisw/dotnet-dsd ramosisw/dotnet-dsd:arm
     docker --config . manifest push ramosisw/dotnet-dsd
     docker --config . logout
+  condition: and(succeeded(), startsWith(variables['Build.SourceVersionMessage'], '[Deploy]'))
   displayName: 'docker push images'
 # - task: InstallSSHKey@0
 #   inputs:
